@@ -268,17 +268,28 @@
     .experience-block ul { display: grid; gap: 8px; margin: 0; padding-left: 19px; color: #c5cbc4; font-size: 13px; line-height: 1.75; }
     .experience-block li::marker { color: var(--coral); }
     .projects-section { grid-template-columns: 1fr; gap: 16px; }
-    .projects-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+    .projects-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
     .projects-heading h2 { margin: 0; font-size: 27px; }
-    .repo-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; margin: 0; padding: 0; list-style: none; }
+    .projects-tools { flex: 1 1 100%; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .projects-status { min-width: 0; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+    .projects-status[data-state="error"] { color: var(--coral); }
+    .projects-refresh { flex: 0 0 auto; min-height: 36px; padding: 0 12px; border: 1px solid var(--line); background: transparent; color: var(--paper); cursor: pointer; font-family: var(--mono); font-size: 10px; }
+    .projects-refresh:hover:not(:disabled) { border-color: var(--mint); color: var(--mint); }
+    .projects-refresh:disabled { cursor: wait; opacity: .65; }
+    .repo-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); column-gap: 28px; margin: 0; padding: 0; list-style: none; }
     .repo-list li { border-top: 1px solid var(--line); }
-    .repo-trigger { width: 100%; min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0; border: 0; background: transparent; color: var(--paper); cursor: pointer; font: inherit; font-size: 14px; font-weight: 700; text-align: left; }
+    .repo-trigger { width: 100%; min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border: 0; background: transparent; color: var(--paper); cursor: pointer; font: inherit; font-size: 14px; font-weight: 700; text-align: left; overflow-wrap: anywhere; }
     .repo-trigger:hover, .repo-trigger:focus-visible { color: var(--mint); }
     .repo-arrow { color: var(--coral); font-family: var(--mono); font-size: 13px; }
     .project-dialog {
-      width: min(480px, calc(100% - 32px));
+      width: min(560px, calc(100% - 24px));
       max-width: none;
-      padding: 30px;
+      max-height: min(90vh, 780px);
+      max-height: min(90dvh, 780px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: clamp(16px, 4vw, 30px);
+      margin: auto;
       border: 1px solid var(--line);
       background: var(--surface);
       color: var(--paper);
@@ -363,6 +374,8 @@
 
     @media (max-width: 700px) {
       .shell { width: min(100% - 36px, 520px); }
+      .resume-section { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+      .resume-entry { grid-template-columns: minmax(0, 1fr); gap: 8px; }
       .topbar { min-height: 72px; align-items: flex-start; flex-direction: column; justify-content: center; gap: 12px; padding-block: 14px; }
       .nav { width: 100%; justify-content: space-between; gap: 8px; }
       .nav a { font-size: 10px; }
@@ -372,7 +385,12 @@
       .about { grid-template-columns: 1fr; gap: 22px; padding-block: 64px 70px; }
       .about-copy h2 { font-size: 26px; }
       .skill { width: 158px; }
-      .repo-list { grid-template-columns: 1fr; }
+      .projects-heading { width: 100%; }
+      .projects-heading h2 { font-size: 24px; }
+      .projects-tools { width: 100%; flex: 0 1 auto; align-items: flex-start; }
+      .repo-list { grid-template-columns: minmax(0, 1fr); }
+      .project-dialog h2 { font-size: 21px; }
+      .preview-flower-copy { left: 12px; }
       .projects-heading { align-items: flex-start; flex-direction: column; gap: 0; }
     }
 
@@ -570,22 +588,12 @@
       <div class="projects-heading">
         <span class="section-index">05 / PROYECTOS</span>
         <h2 id="projects-title">Proyectos</h2>
+        <div class="projects-tools">
+          <p class="projects-status" role="status" aria-live="polite">Cargando proyectos desde GitHub...</p>
+          <button class="projects-refresh" type="button">Actualizar</button>
+        </div>
       </div>
       <ul class="repo-list">
-        <li><button class="repo-trigger" type="button" data-preview="web" data-name="AlmaCloud" data-description="Proyecto web llamado AlmaCloud. En el repositorio puedes explorar su implementación y conocer más sobre la propuesta." data-tech="HTML · CSS" data-url="https://github.com/enri2004/AlmaCloud">AlmaCloud <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="api" data-name="api_rest" data-description="Proyecto de API REST desarrollado con JavaScript. Consulta el código para revisar sus rutas y funcionamiento." data-tech="JavaScript · API REST" data-url="https://github.com/enri2004/api_rest">api_rest <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="api" data-name="api_rest2" data-description="Segundo proyecto relacionado con una API REST. Abre el repositorio para conocer sus recursos y detalles de implementación." data-tech="API REST" data-url="https://github.com/enri2004/api_rest2">api_rest2 <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="web" data-name="App" data-description="Aplicación web. El repositorio incluye el código fuente para explorar cómo está construida." data-tech="JavaScript · CSS · HTML" data-url="https://github.com/enri2004/App">App <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="web" data-name="Consultoria" data-description="Proyecto web relacionado con consultoría. Visita el repositorio para ver sus páginas y código." data-tech="JavaScript · CSS · HTML" data-url="https://github.com/enri2004/Consultoria">Consultoria <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="git" data-name="cursogit" data-description="Proyecto de curso de Git, con ejercicios y práctica de control de versiones." data-tech="Python · Git" data-url="https://github.com/enri2004/cursogit">cursogit <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="flowers" data-name="Flores-amarillas" data-description="Experiencia web interactiva que revela un jardín de tulipanes amarillos animados, con destellos, música ambiental y un mensaje especial." data-tech="JavaScript · HTML · CSS · SVG · animaciones" data-url="https://github.com/enri2004/Flores-amarillas">Flores-amarillas <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="list" data-name="lista" data-description="Proyecto web de lista, construido con tecnologías web. Consulta el código fuente para conocer sus detalles." data-tech="JavaScript · CSS · HTML" data-url="https://github.com/enri2004/lista">lista <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="web" data-name="pagina-web" data-description="Proyecto de página web. En el repositorio puedes consultar su diseño y código." data-tech="JavaScript · CSS · HTML" data-url="https://github.com/enri2004/pagina-web">pagina-web <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="web" data-name="Pagina_Convocatori" data-description="Proyecto web relacionado con convocatorias. Revisa el repositorio para ver su estructura y funcionalidades." data-tech="PHP · JavaScript · CSS" data-url="https://github.com/enri2004/Pagina_Convocatori">Pagina_Convocatori <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="hospital" data-name="serve_hospital" data-description="Proyecto relacionado con servicios hospitalarios. En el repositorio puedes explorar su código e implementación." data-tech="Proyecto de servicios hospitalarios" data-url="https://github.com/enri2004/serve_hospital">serve_hospital <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="hospital" data-name="sistema_hospitalario" data-description="Proyecto web de sistema hospitalario. Consulta su repositorio para conocer el alcance y revisar el código." data-tech="JavaScript · CSS · HTML" data-url="https://github.com/enri2004/sistema_hospitalario">sistema_hospitalario <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="mobile" data-name="Tandas_Tia_Yayi" data-description="Aplicación móvil diseñada para organizar y manejar tandas de una forma sencilla." data-tech="TypeScript · JavaScript · Kotlin · Expo" data-url="https://github.com/enri2004/Tandas_Tia_Yayi">Tandas_Tia_Yayi <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
-        <li><button class="repo-trigger" type="button" data-preview="api" data-name="Tandas_Tia_Yayi_Api" data-description="API que da soporte a la aplicación móvil Tandas_Tia_Yayi." data-tech="JavaScript · API REST" data-url="https://github.com/enri2004/Tandas_Tia_Yayi_Api">Tandas_Tia_Yayi_Api <span class="repo-arrow" aria-hidden="true">↗</span></button></li>
       </ul>
     </section>
 
@@ -616,6 +624,9 @@
     const projectDialogTech = document.querySelector(".project-dialog-tech");
     const projectDialogLink = document.querySelector(".project-dialog-link");
     const projectPreview = document.querySelector(".project-preview");
+    const repoList = document.querySelector(".repo-list");
+    const projectsStatus = document.querySelector(".projects-status");
+    const projectsRefresh = document.querySelector(".projects-refresh");
 
     const tulipPreview = '<svg viewBox="0 0 100 300"><path class="stem" d="M50 300 C47 230 53 160 49 77" fill="none"/><path class="leaf" d="M48 222 C18 205 9 175 12 145 C36 154 51 178 48 222Z"/><path class="petal" d="M51 112 C32 112 18 99 18 78 C18 57 28 35 42 23 C58 49 47 70 56 85 C58 97 56 107 51 112Z"/><path class="petal" d="M50 112 C44 96 44 78 50 60 C55 43 65 29 78 21 C80 47 76 73 66 93 C61 103 56 109 50 112Z"/></svg>';
     const flowerHeights = [125, 160, 132, 155, 128];
@@ -632,6 +643,94 @@
       flowers: flowersPreview
     };
 
+    function getProjectPreview(repository) {
+      const searchableText = `${repository.name} ${repository.description || ""} ${(repository.topics || []).join(" ")}`.toLowerCase();
+      if (searchableText.includes("tanda") || searchableText.includes("mobile") || searchableText.includes("móvil") || ["TypeScript", "Kotlin", "Dart"].includes(repository.language)) return "mobile";
+      if (searchableText.includes("hospital") || searchableText.includes("salud") || searchableText.includes("clinic")) return "hospital";
+      if (searchableText.includes("flor") || searchableText.includes("flower") || searchableText.includes("jardín")) return "flowers";
+      if (searchableText.includes("lista") || searchableText.includes("list") || searchableText.includes("tarea") || searchableText.includes("task")) return "list";
+      if (searchableText.includes("api") || searchableText.includes("backend") || searchableText.includes("server")) return "api";
+      if (searchableText.includes("git") || searchableText.includes("curso")) return "git";
+      return "web";
+    }
+
+    function addProject(repository) {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.className = "repo-trigger";
+      button.type = "button";
+      button.dataset.name = repository.name;
+      button.dataset.description = repository.description || `Repositorio público de ${repository.name}. Abre el proyecto en GitHub para conocer más detalles.`;
+      button.dataset.tech = [repository.language, ...(repository.topics || [])].filter(Boolean).slice(0, 5).join(" · ") || "Consulta las tecnologías en GitHub";
+      button.dataset.url = repository.html_url;
+      button.dataset.preview = getProjectPreview(repository);
+
+      const name = document.createElement("span");
+      name.textContent = repository.name;
+      const arrow = document.createElement("span");
+      arrow.className = "repo-arrow";
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = "↗";
+
+      button.append(name, arrow);
+      item.append(button);
+      repoList.append(item);
+    }
+
+    let isLoadingProjects = false;
+
+    async function loadProjects() {
+      if (isLoadingProjects) return;
+
+      isLoadingProjects = true;
+      projectsRefresh.disabled = true;
+      projectsStatus.dataset.state = "loading";
+      projectsStatus.textContent = "Cargando proyectos desde GitHub...";
+
+      try {
+        const repositories = [];
+        let page = 1;
+        let pageRepositories;
+
+        do {
+          const response = await fetch(`https://api.github.com/users/enri2004/repos?type=owner&sort=created&direction=desc&per_page=100&page=${page}`);
+          if (!response.ok) {
+            throw new Error(`GitHub respondió con el estado ${response.status}.`);
+          }
+
+          pageRepositories = await response.json();
+          if (!Array.isArray(pageRepositories)) {
+            throw new Error("GitHub devolvió una respuesta que no se pudo interpretar.");
+          }
+
+          repositories.push(...pageRepositories.filter((repository) => !repository.fork));
+          page += 1;
+        } while (pageRepositories.length === 100);
+
+        const publicRepositories = repositories.filter((repository) => !repository.private);
+        repoList.replaceChildren();
+        publicRepositories.forEach(addProject);
+        projectsStatus.dataset.state = "success";
+        const projectLabel = publicRepositories.length === 1 ? "proyecto público" : "proyectos públicos";
+        projectsStatus.textContent = `${publicRepositories.length} ${projectLabel} · sincronizados con GitHub`;
+        lastProjectsRefresh = Date.now();
+      } catch (error) {
+        console.error("No se pudieron cargar los proyectos desde GitHub.", error);
+        projectsStatus.dataset.state = "error";
+        projectsStatus.textContent = "No se pudieron cargar los proyectos de GitHub. Comprueba tu conexión e inténtalo de nuevo.";
+      } finally {
+        isLoadingProjects = false;
+        projectsRefresh.disabled = false;
+      }
+    }
+
+    let lastProjectsRefresh = 0;
+    projectsRefresh.addEventListener("click", loadProjects);
+    loadProjects();
+    window.setInterval(() => {
+      if (Date.now() - lastProjectsRefresh >= 5 * 60 * 1000) loadProjects();
+    }, 5 * 60 * 1000);
+
     motionToggle.addEventListener("click", () => {
       const isPaused = marquee.classList.toggle("is-paused");
       motionToggle.setAttribute("aria-pressed", String(isPaused));
@@ -639,19 +738,17 @@
       motionToggle.textContent = isPaused ? "Reanudar" : "Pausar";
     });
 
-    document.querySelectorAll(".repo-trigger").forEach((projectButton) => {
-      projectButton.addEventListener("click", () => {
-        projectDialogTitle.textContent = projectButton.dataset.name;
-        projectPreview.innerHTML = previewTemplates[projectButton.dataset.preview] || previewTemplates.web;
-        projectPreview.setAttribute("aria-label", `Vista ilustrativa del proyecto ${projectButton.dataset.name}`);
-        projectPreview.querySelectorAll(".preview-project-title").forEach((title) => {
-          title.textContent = projectButton.dataset.name;
-        });
-        projectDialogDescription.textContent = projectButton.dataset.description;
-        projectDialogTech.textContent = projectButton.dataset.tech;
-        projectDialogLink.href = projectButton.dataset.url;
-        projectDialog.showModal();
-      });
+    repoList.addEventListener("click", (event) => {
+      const projectButton = event.target.closest(".repo-trigger");
+      if (!projectButton) return;
+
+      projectDialogTitle.textContent = projectButton.dataset.name;
+      projectPreview.innerHTML = previewTemplates[projectButton.dataset.preview] || previewTemplates.web;
+      projectPreview.setAttribute("aria-label", `Vista ilustrativa del proyecto ${projectButton.dataset.name}`);
+      projectDialogDescription.textContent = projectButton.dataset.description;
+      projectDialogTech.textContent = projectButton.dataset.tech;
+      projectDialogLink.href = projectButton.dataset.url;
+      projectDialog.showModal();
     });
 
     projectDialog.addEventListener("click", (event) => {
